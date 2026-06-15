@@ -1,0 +1,9 @@
+packages:
+  - "frontend"
+  - "contracts"
+  - "server"
+allowBuilds:
+  bigint-buffer: true
+  keccak: true
+  secp256k1: true
+  sqlite3: true

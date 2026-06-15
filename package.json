@@ -1,0 +1,20 @@
+{
+  "name": "confidential-drop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Sealed-bid auction settlement dApp on Zama Protocol (fhEVM + ERC-7984)",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@11.5.2"
+}

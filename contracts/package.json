@@ -1,0 +1,25 @@
+{
+  "name": "confidential-drop-contracts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "e2e:local": "hardhat run scripts/e2e-local.js --network hardhat",
+    "deploy:local": "hardhat run deploy/01_token.js --network hardhat && hardhat run deploy/02_distributor.js --network hardhat",
+    "deploy:sepolia": "hardhat run deploy/01_token.js --network sepolia && hardhat run deploy/02_distributor.js --network sepolia",
+    "e2e:sepolia": "hardhat run scripts/e2e-sepolia.js --network sepolia",
+    "lint": "solhint 'contracts/**/*.sol'"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0",
+    "solhint": "^5.0.0"
+  },
+  "dependencies": {
+    "@fhevm/solidity": "^0.11.1",
+    "encrypted-types": "^0.0.4",
+    "@zama-fhe/relayer-sdk": "^0.4.3",
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+}
