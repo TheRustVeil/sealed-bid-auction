@@ -12,7 +12,7 @@
 - At the start of a session, tell me the phase we're on and I'll read this file instead of re-asking. Keep it in the repo root.
 - **Companion file:** `ARCHITECTURE.md` holds the full folder tree + component conventions. Project is now scaffolded — the real repo is the source of truth.
 
-**Current focus:** _Phase 11 — Frontend Vercel Deploy (Phase 10 complete 2026-06-15)_
+**Current focus:** _Phase 11 — Frontend Vercel Deploy (in progress 2026-06-15)_
 **Last updated:** 2026-06-15
 
 ---
@@ -215,8 +215,28 @@ During live browser testing at `localhost:5173` the following issues were discov
   - Deployer: `0x45Ac14861BD3b1c736F01B3855784648a8b5Ac51`
 - [x] Full FHE e2e verified on Sepolia: `encrypt → executeDistribution → publicDecrypt → claim` (alice balance = 1,000,000 ATK on-chain)
 - [x] `frontend/.env.local` written: `VITE_SKIP_ZAMA=false`, `VITE_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com`
-- [ ] Frontend deployed (Vercel/Netlify) — point to `frontend/` with `.env.local` vars as build env vars
+- [x] Frontend deployed: **https://sealed-bid-auction-frontend.vercel.app/** (2026-06-15, moved to Phase 11)
 - [ ] Final end-to-end walkthrough on the live URL with MetaMask on Sepolia
+- [ ] Submission package assembled and submitted
+
+---
+
+## Phase 11 — Frontend Vercel Deploy
+
+- [x] `frontend/vercel.json` created — SPA rewrites (`/(.*) → /index.html`), framework: vite, buildCommand: `pnpm build`
+- [x] `git init` + initial commit (135 files, no secrets — `.env`/`.env.local`/`node_modules`/`.claude/` excluded)
+- [x] Remote added: `https://github.com/TheRustVeil/sealed-bid-auction.git`
+- [x] Pushed to GitHub (`main` branch)
+- [x] Connect GitHub repo to Vercel — import `TheRustVeil/sealed-bid-auction`, root: `frontend/`
+- [x] Set Vercel env vars (Production):
+  - `VITE_CHAIN_ID=11155111`
+  - `VITE_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com`
+  - `VITE_TOKEN_ADDRESS=0x7CF438647deD14b3503ba133176b2EB7524af989`
+  - `VITE_DISPERSE_ADDRESS=0x5F48197D829D7FD967799C7F2a9C94fbC30fc634`
+  - `VITE_AIRDROP_ADDRESS=` (leave blank)
+  - `VITE_SKIP_ZAMA=false`
+- [x] Deploy live: **https://sealed-bid-auction-frontend.vercel.app/**
+- [ ] Final end-to-end walkthrough on live URL with MetaMask on Sepolia
 - [ ] Submission package assembled and submitted
 
 ---

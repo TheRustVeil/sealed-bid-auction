@@ -17,7 +17,7 @@ test.describe("Landing page", () => {
   });
 
   test("has an Operator call-to-action button", async ({ page }) => {
-    const operatorBtn = page.locator('button:has-text("Operator")');
+    const operatorBtn = page.locator('button:has-text("Launch Auction")').first();
     await expect(operatorBtn).toBeVisible();
   });
 
@@ -27,7 +27,7 @@ test.describe("Landing page", () => {
   });
 
   test("navigates to /operator when Operator button is clicked", async ({ page }) => {
-    await page.locator('button:has-text("Operator")').first().click();
+    await page.locator('button:has-text("Launch Auction")').first().click();
     await expect(page).toHaveURL(/\/operator/);
   });
 
