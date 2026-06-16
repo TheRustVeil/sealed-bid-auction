@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../../../../components/ui';
-import { matchZamaError } from '@zama-fhe/react-sdk';
 
 const ENC_STEPS = [
   'Generating encryption keys...',
@@ -48,12 +47,15 @@ export function StepExecute({ execute, isExecuting, executeError, executeData, o
   }
 
   if (started && executeError) {
-    const message = matchZamaError(executeError, {
-      SIGNING_REJECTED: () => 'Transaction cancelled — please approve in your wallet.',
-      ENCRYPTION_FAILED: () => 'Encryption failed — please try again.',
-      TRANSACTION_REVERTED: () => 'Transaction failed on-chain — check your balance and approval.',
-      _: () => executeError?.message ?? 'An unexpected error occurred.',
-    });
+    const msg = executeError?.message ?? '';
+    const message =
+      msg.includes('User rejected') || msg.includes('user rejected') || msg.includes('4001')
+        ? 'Transaction cancelled — please approve in your wallet.'
+        : msg.includes('reverted')
+        ? 'Transaction failed on-chain — check your token balance, approval, and ETH for gas.'
+        : msg.includes('ncrypt')
+        ? 'Encryption failed — please try again.'
+        : msg || 'An unexpected error occurred.';
 
     return (
       <div className="space-y-6">
