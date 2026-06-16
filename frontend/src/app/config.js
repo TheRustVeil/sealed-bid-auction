@@ -1,12 +1,12 @@
 export const CHAIN_ID = Number(import.meta.env.VITE_CHAIN_ID ?? 11155111); // Sepolia
 
 export const CONTRACT_ADDRESSES = {
-  confidentialDisperse: import.meta.env.VITE_DISPERSE_ADDRESS ?? '',
-  confidentialAirdrop:  import.meta.env.VITE_AIRDROP_ADDRESS  ?? '',
-  confidentialToken:    import.meta.env.VITE_TOKEN_ADDRESS    ?? '',
+  confidentialDisperse: import.meta.env.VITE_DISPERSE_ADDRESS || '0x5F48197D829D7FD967799C7F2a9C94fbC30fc634',
+  confidentialAirdrop:  import.meta.env.VITE_AIRDROP_ADDRESS  || '',
+  confidentialToken:    import.meta.env.VITE_TOKEN_ADDRESS    || '0x7CF438647deD14b3503ba133176b2EB7524af989',
 };
 
-export const RPC_URL = import.meta.env.VITE_RPC_URL ?? '';
+export const RPC_URL = import.meta.env.VITE_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
 
 /**
  * Zama Sepolia network config — matches the addresses used in:
