@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 32 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay },
+});
 
 const ArrowRight = () => (
   <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -130,15 +137,16 @@ export function HeroSection() {
           {/* ── Left: copy ── */}
           <div>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-chip border border-violet-500/25 bg-violet-500/8 text-violet-300 text-xs font-medium mb-8 backdrop-blur-sm">
+            <motion.div {...fadeUp(0)} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-chip border border-violet-500/25 bg-violet-500/8 text-violet-300 text-xs font-medium mb-8 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
               Sealed-Bid Auction Protocol · Powered by Zama TFHE
-            </div>
+            </motion.div>
 
             {/* Headline */}
             <h1 className="text-[clamp(2.8rem,6vw,5rem)] font-black tracking-tight leading-[1.05] mb-6">
-              <span className="block text-white">Private Bids.</span>
-              <span
+              <motion.span {...fadeUp(0.1)} className="block text-white">Private Bids.</motion.span>
+              <motion.span
+                {...fadeUp(0.2)}
                 className="block"
                 style={{
                   background: 'linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #22d3ee 100%)',
@@ -148,19 +156,19 @@ export function HeroSection() {
                 }}
               >
                 Fair Prices.
-              </span>
-              <span className="block text-white">Zero Knowledge.</span>
+              </motion.span>
+              <motion.span {...fadeUp(0.3)} className="block text-white">Zero Knowledge.</motion.span>
             </h1>
 
-            <p className="text-[17px] text-white/45 leading-relaxed mb-8 max-w-lg">
+            <motion.p {...fadeUp(0.4)} className="text-[17px] text-white/45 leading-relaxed mb-8 max-w-lg">
               The first token distribution protocol where every winner pays their exact private bid.
               {' '}<span className="text-white/75 font-medium">
                 Encrypted end-to-end with TFHE — no one ever sees what others paid.
               </span>
-            </p>
+            </motion.p>
 
             {/* Trust points */}
-            <div className="flex flex-col gap-2 mb-10">
+            <motion.div {...fadeUp(0.5)} className="flex flex-col gap-2 mb-10">
               {[
                 'Bids encrypted client-side before submission',
                 'Operator never sees plaintext amounts',
@@ -173,10 +181,10 @@ export function HeroSection() {
                   {p}
                 </div>
               ))}
-            </div>
+            </motion.div>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3">
+            <motion.div {...fadeUp(0.6)} className="flex flex-wrap gap-3">
               <button
                 onClick={() => navigate('/operator')}
                 className="group flex items-center gap-3 px-7 py-3.5 rounded-xl font-semibold text-sm text-white transition-all hover:-translate-y-0.5"
@@ -202,10 +210,10 @@ export function HeroSection() {
                   <ArrowRight />
                 </span>
               </button>
-            </div>
+            </motion.div>
 
             {/* Social proof */}
-            <div className="flex items-center gap-3 mt-8">
+            <motion.div {...fadeUp(0.7)} className="flex items-center gap-3 mt-8">
               <div className="flex -space-x-2">
                 {['V', 'S', 'K', 'M'].map((l, i) => (
                   <div
@@ -222,11 +230,16 @@ export function HeroSection() {
               <p className="text-white/30 text-xs">
                 Trusted by <span className="text-white/60 font-semibold">50+</span> Web3 teams
               </p>
-            </div>
+            </motion.div>
           </div>
 
           {/* ── Right: animated terminal ── */}
-          <div className="relative">
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          >
             <div
               className="absolute inset-0 -m-8 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.12) 0%, transparent 70%)' }}
@@ -235,21 +248,27 @@ export function HeroSection() {
               <AuctionTerminal />
             </div>
             {/* Floating stat chips */}
-            <div
+            <motion.div
               className="absolute -bottom-4 -left-4 flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-panel/90 backdrop-blur text-xs shadow-xl"
-              style={{ animation: 'float 5s ease-in-out infinite', animationDelay: '0.5s' }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.4, ease: 'backOut' }}
+              style={{ animation: 'float 5s ease-in-out 0.9s infinite' }}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
               <span className="text-white/60">0 bids exposed</span>
-            </div>
-            <div
+            </motion.div>
+            <motion.div
               className="absolute -top-4 -right-4 flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-panel/90 backdrop-blur text-xs shadow-xl"
-              style={{ animation: 'float 7s ease-in-out infinite', animationDelay: '1s' }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.1, duration: 0.4, ease: 'backOut' }}
+              style={{ animation: 'float 7s ease-in-out 1.1s infinite' }}
             >
               <span className="text-violet-400 font-mono font-bold">TFHE</span>
               <span className="text-white/40">encrypted</span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
