@@ -8,56 +8,64 @@ const CheckIcon = () => (
 
 export function Stepper({ steps, current, className = '' }) {
   return (
-    <nav aria-label="Progress" className={`flex items-start ${className}`}>
-      {steps.map((label, i) => {
-        const done   = i < current;
-        const active = i === current;
+    <div>
+      <nav aria-label="Progress" className={`flex items-start ${className}`}>
+        {steps.map((label, i) => {
+          const done   = i < current;
+          const active = i === current;
 
-        return (
-          <div key={i} className="flex items-center flex-1 last:flex-none">
-            <div className="flex flex-col items-center gap-1.5">
-              {/* Step circle — springs in when it becomes "done" */}
-              <motion.div
-                animate={done ? { scale: [1, 1.35, 1] } : { scale: 1 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 12 }}
-                className={[
-                  'flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-colors',
-                  done   ? 'bg-confidential text-white' :
-                  active ? 'border-2 border-confidential text-confidential bg-confidential/10' :
-                           'border-2 border-white/20 text-white/30',
-                ].join(' ')}
-              >
-                {done ? <CheckIcon /> : i + 1}
-              </motion.div>
-
-              {/* Active step: soft pulsing ring */}
-              {active && (
+          return (
+            <div key={i} className="flex items-center flex-1 last:flex-none">
+              <div className="flex flex-col items-center gap-1.5">
+                {/* Step circle — springs in when it becomes "done" */}
                 <motion.div
-                  className="absolute w-8 h-8 rounded-full border border-confidential/40"
-                  animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
-                  transition={{ duration: 1.4, repeat: Infinity, ease: 'easeOut' }}
-                />
-              )}
+                  animate={done ? { scale: [1, 1.35, 1] } : { scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+                  className={[
+                    'flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-colors',
+                    done   ? 'bg-confidential text-white' :
+                    active ? 'border-2 border-confidential text-confidential bg-confidential/10' :
+                             'border-2 border-white/20 text-white/30',
+                  ].join(' ')}
+                >
+                  {done ? <CheckIcon /> : i + 1}
+                </motion.div>
 
-              <span className={`text-xs whitespace-nowrap ${done || active ? 'text-white/80' : 'text-white/30'}`}>
-                {label}
-              </span>
-            </div>
+                {/* Active step: soft pulsing ring */}
+                {active && (
+                  <motion.div
+                    className="absolute w-8 h-8 rounded-full border border-confidential/40"
+                    animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
+                    transition={{ duration: 1.4, repeat: Infinity, ease: 'easeOut' }}
+                  />
+                )}
 
-            {/* Connector line — fills left→right as step completes */}
-            {i < steps.length - 1 && (
-              <div className="flex-1 h-px mx-2 mb-5 bg-white/10 overflow-hidden relative">
-                <motion.div
-                  className="absolute inset-y-0 left-0 bg-confidential"
-                  initial={{ width: '0%' }}
-                  animate={{ width: done ? '100%' : '0%' }}
-                  transition={{ duration: 0.55, ease: 'easeInOut' }}
-                />
+                {/* Labels hidden on mobile to prevent overflow — shown sm+ */}
+                <span className={`hidden sm:block text-xs whitespace-nowrap ${done || active ? 'text-white/80' : 'text-white/30'}`}>
+                  {label}
+                </span>
               </div>
-            )}
-          </div>
-        );
-      })}
-    </nav>
+
+              {/* Connector line — fills left→right as step completes */}
+              {i < steps.length - 1 && (
+                <div className="flex-1 h-px mx-2 mb-5 bg-white/10 overflow-hidden relative">
+                  <motion.div
+                    className="absolute inset-y-0 left-0 bg-confidential"
+                    initial={{ width: '0%' }}
+                    animate={{ width: done ? '100%' : '0%' }}
+                    transition={{ duration: 0.55, ease: 'easeInOut' }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
+      {/* Mobile-only current step label */}
+      <p className="sm:hidden text-center text-xs text-white/45 mt-3">
+        Step {current + 1} of {steps.length}:{' '}
+        <span className="text-white/80 font-medium">{steps[current]}</span>
+      </p>
+    </div>
   );
 }

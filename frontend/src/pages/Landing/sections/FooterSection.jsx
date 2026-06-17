@@ -86,7 +86,7 @@ export function FooterSection() {
           style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.4), rgba(6,182,212,0.2), rgba(124,58,237,0.1))' }}
         >
           <div
-            className="rounded-3xl px-10 py-12 text-center"
+            className="rounded-3xl px-5 py-8 sm:px-10 sm:py-12 text-center"
             style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.06) 0%, rgba(13,13,31,0.95) 60%)' }}
           >
             <h2 className="text-3xl font-bold text-white mb-3">Ready to deploy?</h2>

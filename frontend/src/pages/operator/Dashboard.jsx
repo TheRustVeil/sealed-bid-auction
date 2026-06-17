@@ -86,16 +86,16 @@ export function Dashboard() {
 
         {/* ── Stats (only when connected & has data) ── */}
         {isConnected && count > 0 && (
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8">
             {stats.map(({ label, value }, i) => {
               const c = STAT_COLORS[i];
               return (
                 <div
                   key={label}
-                  className={`p-5 rounded-2xl border ${c.border} ${c.bg} backdrop-blur-sm`}
+                  className={`p-3 sm:p-5 rounded-2xl border ${c.border} ${c.bg} backdrop-blur-sm`}
                 >
-                  <div className={`text-3xl font-black mb-1 ${c.text}`}>{value}</div>
-                  <div className="text-white/35 text-xs uppercase tracking-widest">{label}</div>
+                  <div className={`text-2xl sm:text-3xl font-black mb-1 ${c.text}`}>{value}</div>
+                  <div className="text-white/35 text-[10px] sm:text-xs uppercase tracking-widest leading-tight">{label}</div>
                 </div>
               );
             })}
