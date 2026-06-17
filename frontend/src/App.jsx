@@ -48,7 +48,11 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Providers>
-        <InnerApp />
+        <div className="aurora-orb aurora-orb-violet" />
+        <div className="aurora-orb aurora-orb-cyan" />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <InnerApp />
+        </div>
       </Providers>
     </ErrorBoundary>
   );

@@ -19,10 +19,10 @@ export function loadDistributionsLocally() {
   }
 }
 
-export function saveDistributionLocally({ id, label, token, recipientCount, type, createdAt }) {
+export function saveDistributionLocally({ id, label, token, recipientCount, type, privacyMode, createdAt }) {
   const existing = loadDistributionsLocally();
   const updated = [
-    { id, label, token, recipientCount, type, createdAt: createdAt ?? Date.now() },
+    { id, label, token, recipientCount, type, privacyMode, createdAt: createdAt ?? Date.now() },
     ...existing,
   ];
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));

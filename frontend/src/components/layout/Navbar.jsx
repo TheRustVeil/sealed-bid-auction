@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
 import { NetworkBadge } from '../../features/wallet/components/NetworkBadge';
 
@@ -14,25 +15,14 @@ const ChevronLeft = () => (
   </svg>
 );
 
-/*
- * NAV_LINKS:
- *  - end=false  → active for the path AND any deeper route
- *  - end=true   → active only on exact path
- */
 const NAV_LINKS = [
-  { label: 'Operator', to: '/operator', end: false },
-  { label: 'Check Bid', to: '/recipient', end: true },
-  { label: 'My Allocations', to: '/recipient/allocations', end: false },
-  { label: 'Discover', to: '/discover', end: false },
-  { label: 'Profile', to: '/profile', end: false },
+  { label: 'Operator',      to: '/operator',              end: false },
+  { label: 'Check Bid',     to: '/recipient',             end: true  },
+  { label: 'My Allocations',to: '/recipient/allocations', end: false },
+  { label: 'Discover',      to: '/discover',              end: false },
+  { label: 'Profile',       to: '/profile',               end: false },
 ];
 
-/**
- * Shared sticky navbar used on every page.
- *
- * Props:
- *   back  – { label, to }  →  shows a back-chevron breadcrumb before the logo
- */
 export function Navbar({ back }) {
   const navigate = useNavigate();
 
@@ -41,7 +31,7 @@ export function Navbar({ back }) {
       <div className="px-5 py-3.5 flex items-center justify-between gap-4">
         {/* ── Left: logo + back crumb + nav ── */}
         <div className="flex items-center gap-5 min-w-0">
-          {/* Back crumb (optional) */}
+          {/* Back crumb */}
           {back && (
             <button
               onClick={() => navigate(back.to)}
@@ -71,23 +61,34 @@ export function Navbar({ back }) {
           {/* Divider */}
           <div className="w-px h-4 bg-white/[0.08] hidden sm:block" />
 
-          {/* Nav links */}
+          {/* Desktop nav — sliding pill via layoutId */}
           <nav className="hidden sm:flex items-center gap-0.5">
             {NAV_LINKS.map(({ label, to, end }) => (
               <NavLink
                 key={to}
                 to={to}
                 end={end}
-                className={({ isActive }) =>
-                  [
-                    'px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150',
-                    isActive
-                      ? 'text-white bg-white/[0.08]'
-                      : 'text-white/40 hover:text-white/75 hover:bg-white/[0.05]',
-                  ].join(' ')
-                }
+                className="relative px-3 py-1.5 rounded-lg text-[13px] font-medium transition-colors duration-150"
               >
-                {label}
+                {({ isActive }) => (
+                  <>
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-pill"
+                          className="absolute inset-0 rounded-lg bg-white/[0.08]"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                    <span className={`relative z-10 ${isActive ? 'text-white' : 'text-white/40 hover:text-white/75'}`}>
+                      {label}
+                    </span>
+                  </>
+                )}
               </NavLink>
             ))}
           </nav>
@@ -100,7 +101,7 @@ export function Navbar({ back }) {
         </div>
       </div>
 
-      {/* Mobile nav row */}
+      {/* Mobile nav row — simple highlight, no layoutId (avoids cross-row conflict) */}
       <div className="flex sm:hidden items-center gap-0.5 px-5 pb-2 overflow-x-auto scrollbar-hide">
         {back && (
           <button
@@ -119,9 +120,7 @@ export function Navbar({ back }) {
             className={({ isActive }) =>
               [
                 'px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all flex-shrink-0',
-                isActive
-                  ? 'text-white bg-white/[0.08]'
-                  : 'text-white/40 hover:text-white/75',
+                isActive ? 'text-white bg-white/[0.08]' : 'text-white/40 hover:text-white/75',
               ].join(' ')
             }
           >

@@ -7,12 +7,13 @@ const AUCTION_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
  * score = (bidScore × 40) + (timeUrgency × 35) + (activityRate × 25)
  */
 function computeHeat(recipientCount = 0, createdAt = Date.now()) {
+  const count = Number(recipientCount);
   const elapsed = Math.max(Date.now() - (createdAt ?? Date.now()), 0);
   const daysElapsed = Math.max(elapsed / (24 * 60 * 60 * 1000), 0.01);
 
-  const bidScore = Math.min(recipientCount / 20, 1) * 100;
+  const bidScore = Math.min(count / 20, 1) * 100;
   const urgencyScore = Math.min(elapsed / AUCTION_DURATION_MS, 1) * 100;
-  const activityScore = Math.min((recipientCount / daysElapsed) / 3, 1) * 100;
+  const activityScore = Math.min((count / daysElapsed) / 3, 1) * 100;
 
   return Math.round(bidScore * 0.4 + urgencyScore * 0.35 + activityScore * 0.25);
 }

@@ -1,4 +1,5 @@
-import { createBrowserRouter, useRouteError } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+import { Layout } from "./Layout";
 import { Landing } from "../pages/Landing/Landing";
 import { Dashboard } from "../pages/operator/Dashboard";
 import { CreateDistribution } from "../pages/operator/CreateDistribution";
@@ -8,6 +9,7 @@ import { MyAllocations } from "../pages/recipient/MyAllocations";
 import { VerifyProof } from "../pages/recipient/VerifyProof";
 import { Discover } from "../pages/discover/Discover";
 import { Profile } from "../pages/profile/Profile";
+import { useRouteError } from "react-router-dom";
 
 function RouteError() {
   const error = useRouteError();
@@ -30,13 +32,19 @@ function RouteError() {
 const errorElement = <RouteError />;
 
 export const router = createBrowserRouter([
-  { path: "/", element: <Landing />, errorElement },
-  { path: "/operator", element: <Dashboard />, errorElement },
-  { path: "/operator/create", element: <CreateDistribution />, errorElement },
-  { path: "/operator/distribution/:id", element: <DistributionDetail />, errorElement },
-  { path: "/recipient", element: <CheckAllocation />, errorElement },
-  { path: "/recipient/allocations", element: <MyAllocations />, errorElement },
-  { path: "/recipient/verify/:id", element: <VerifyProof />, errorElement },
-  { path: "/discover", element: <Discover />, errorElement },
-  { path: "/profile", element: <Profile />, errorElement },
+  {
+    element: <Layout />,
+    errorElement,
+    children: [
+      { path: "/",                              element: <Landing /> },
+      { path: "/operator",                      element: <Dashboard /> },
+      { path: "/operator/create",               element: <CreateDistribution /> },
+      { path: "/operator/distribution/:id",     element: <DistributionDetail /> },
+      { path: "/recipient",                     element: <CheckAllocation /> },
+      { path: "/recipient/allocations",         element: <MyAllocations /> },
+      { path: "/recipient/verify/:id",          element: <VerifyProof /> },
+      { path: "/discover",                      element: <Discover /> },
+      { path: "/profile",                       element: <Profile /> },
+    ],
+  },
 ]);
