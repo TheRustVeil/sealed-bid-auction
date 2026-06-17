@@ -48,11 +48,16 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Providers>
-        <div className="aurora-orb aurora-orb-violet" />
-        <div className="aurora-orb aurora-orb-cyan" />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <InnerApp />
+        {/* Aurora sits above everything using screen blend — adds glow without blocking content */}
+        <div style={{
+          position: 'fixed', inset: 0,
+          pointerEvents: 'none', zIndex: 9999,
+          mixBlendMode: 'screen', overflow: 'hidden',
+        }}>
+          <div className="aurora-orb aurora-orb-violet" />
+          <div className="aurora-orb aurora-orb-cyan" />
         </div>
+        <InnerApp />
       </Providers>
     </ErrorBoundary>
   );
