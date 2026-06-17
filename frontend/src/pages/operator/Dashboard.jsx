@@ -38,7 +38,7 @@ export function Dashboard() {
 
   const count = distributions?.length ?? 0;
   const executedCount = distributions?.filter((d) => d.executed).length ?? 0;
-  const totalRecipients = distributions?.reduce((s, d) => s + (d.recipientCount ?? 0), 0) ?? 0;
+  const totalRecipients = distributions?.reduce((s, d) => s + Number(d.recipientCount ?? 0), 0) ?? 0;
 
   const stats = [
     { label: 'Auctions', value: count },
