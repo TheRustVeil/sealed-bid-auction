@@ -118,7 +118,7 @@ export function Navbar({ back }) {
         Only needed when at the top (flush mode). When floating the bar is
         narrower and the page content sits naturally beneath it.
       */}
-      <div className={`transition-all duration-300 ${scrolled ? 'h-0' : 'h-[88px]'}`} aria-hidden />
+      <div className="h-[88px]" aria-hidden />
 
       {/* ── Prismatic top-edge line (only shown when flush at top) ── */}
       <AnimatePresence>
