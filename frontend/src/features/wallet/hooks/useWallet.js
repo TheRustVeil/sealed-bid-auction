@@ -1,5 +1,6 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { injected } from 'wagmi/connectors';
+import { injected, walletConnect } from '@wagmi/connectors';
+import { projectId } from '../../../lib/wagmi';
 
 export function useWallet() {
   const { address, isConnected, chain } = useAccount();
@@ -11,7 +12,8 @@ export function useWallet() {
     isConnected,
     chain,
     isConnecting,
-    connect: () => connect({ connector: injected() }),
+    connectInjected: () => connect({ connector: injected() }),
+    connectWC: () => connect({ connector: walletConnect({ projectId }) }),
     disconnect,
   };
 }

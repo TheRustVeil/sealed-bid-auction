@@ -3,6 +3,7 @@ packages:
   - "contracts"
   - "server"
 allowBuilds:
+  '@reown/appkit': true
   bigint-buffer: true
   keccak: true
   secp256k1: true

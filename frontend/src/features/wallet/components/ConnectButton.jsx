@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { useWallet } from '../hooks/useWallet';
 
 function truncate(addr) {
@@ -17,7 +18,18 @@ const SpinnerMini = () => (
 // any sibling-reference node stale. With always-mounted nodes, React only
 // needs to change className/style — no DOM insertions during wallet connect.
 export function ConnectButton() {
-  const { address, isConnected, isConnecting, connect, disconnect } = useWallet();
+  const { address, isConnected, isConnecting, connectInjected, connectWC, disconnect } = useWallet();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const close = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, []);
+
+  // Close picker once connection starts
+  useEffect(() => { if (isConnecting) setOpen(false); }, [isConnecting]);
 
   return (
     <>
@@ -34,24 +46,55 @@ export function ConnectButton() {
       </button>
 
       {/* ── Disconnected state ── */}
-      <button
-        onClick={connect}
-        disabled={isConnecting}
-        tabIndex={isConnected ? -1 : 0}
+      <div
+        className="relative"
+        ref={ref}
+        style={{ display: isConnected ? 'none' : undefined }}
         aria-hidden={isConnected}
-        className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all hover:-translate-y-px"
-        style={{
-          display: isConnected ? 'none' : undefined,
-          background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
-          boxShadow: '0 0 0 1px rgba(124,58,237,0.4), 0 4px 12px rgba(124,58,237,0.2)',
-        }}
       >
-        {/* Spinner always mounted — toggled with display to avoid comment-node placeholder */}
-        <span style={{ display: isConnecting ? undefined : 'none' }}>
-          <SpinnerMini />
-        </span>
-        <span>{isConnecting ? 'Connecting…' : 'Connect Wallet'}</span>
-      </button>
+        <button
+          onClick={() => setOpen((o) => !o)}
+          disabled={isConnecting}
+          tabIndex={isConnected ? -1 : 0}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all hover:-translate-y-px"
+          style={{
+            background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
+            boxShadow: '0 0 0 1px rgba(124,58,237,0.4), 0 4px 12px rgba(124,58,237,0.2)',
+          }}
+        >
+          <span style={{ display: isConnecting ? undefined : 'none' }}>
+            <SpinnerMini />
+          </span>
+          <span>{isConnecting ? 'Connecting…' : 'Connect Wallet'}</span>
+        </button>
+
+        {/* ── Connector picker ── */}
+        {open && !isConnecting && (
+          <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-white/10 bg-[#0f0f1a] shadow-2xl overflow-hidden z-50">
+            <button
+              onClick={() => { connectInjected(); setOpen(false); }}
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.05] transition-colors text-left"
+            >
+              <span className="text-xl leading-none">🦊</span>
+              <div>
+                <div className="text-xs font-medium text-white">Browser Wallet</div>
+                <div className="text-[11px] text-white/40 mt-0.5">MetaMask, Brave, etc.</div>
+              </div>
+            </button>
+            <div className="h-px bg-white/[0.06]" />
+            <button
+              onClick={() => { connectWC(); setOpen(false); }}
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.05] transition-colors text-left"
+            >
+              <span className="text-xl leading-none">📱</span>
+              <div>
+                <div className="text-xs font-medium text-white">WalletConnect</div>
+                <div className="text-[11px] text-white/40 mt-0.5">Mobile wallets · QR code</div>
+              </div>
+            </button>
+          </div>
+        )}
+      </div>
     </>
   );
 }
