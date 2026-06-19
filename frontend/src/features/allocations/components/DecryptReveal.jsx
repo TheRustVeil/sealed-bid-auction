@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Button, ConfidentialChip, Spinner } from '../../../components/ui';
+import { useState, useEffect, useCallback } from 'react';
+import { Button, ConfidentialChip, Spinner, RewardAnimation } from '../../../components/ui';
 import { useAllocation } from '../hooks/useAllocation';
 import { useClaimReveal } from '../hooks/useDecrypt';
 import { ZERO_BYTES32 } from '../../../lib/erc7984';
@@ -44,10 +44,16 @@ export function DecryptReveal({ distributionId, account, distribution }) {
   });
   const cipherText = useCipherScramble(isClaiming);
   const [showGranted, setShowGranted] = useState(false);
+  const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
-    if (plaintext != null) setShowGranted(true);
+    if (plaintext != null) {
+      setShowGranted(true);
+      setShowReward(true);
+    }
   }, [plaintext]);
+
+  const handleDismissReward = useCallback(() => setShowReward(false), []);
 
   if (allocLoading) return <Spinner size="sm" />;
 
@@ -112,6 +118,12 @@ export function DecryptReveal({ distributionId, account, distribution }) {
         plaintext={plaintext}
         isClaimed={alreadyClaimed}
         distribution={distribution}
+      />
+
+      <RewardAnimation
+        amount={plaintext != null ? Number(plaintext) / 1e6 : null}
+        visible={showReward}
+        onDismiss={handleDismissReward}
       />
     </div>
   );

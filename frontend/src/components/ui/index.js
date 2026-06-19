@@ -7,3 +7,4 @@ export { Modal } from './Modal';
 export { Stepper } from './Stepper';
 export { NotificationToast } from './NotificationToast';
 export { HeatScore } from './HeatScore';
+export { RewardAnimation } from './RewardAnimation';
