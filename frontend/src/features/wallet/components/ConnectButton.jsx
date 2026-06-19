@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
+import { WalletModal } from './WalletModal';
 
 function truncate(addr) {
   return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
@@ -15,21 +16,11 @@ const SpinnerMini = () => (
 // Both button variants are always present in the DOM — we toggle visibility
 // with CSS display instead of mounting/unmounting. This avoids React 19's
 // insertBefore crash: when MetaMask opens it mutates document.body, making
-// any sibling-reference node stale. With always-mounted nodes, React only
-// needs to change className/style — no DOM insertions during wallet connect.
+// any sibling-reference node stale.
 export function ConnectButton() {
-  const { address, isConnected, isConnecting, connectInjected, connectWC, disconnect } = useWallet();
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const close = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener('mousedown', close);
-    return () => document.removeEventListener('mousedown', close);
-  }, []);
-
-  // Close picker once connection starts
-  useEffect(() => { if (isConnecting) setOpen(false); }, [isConnecting]);
+  const walletHooks = useWallet();
+  const { address, isConnected, isConnecting, disconnect } = walletHooks;
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <>
@@ -46,55 +37,28 @@ export function ConnectButton() {
       </button>
 
       {/* ── Disconnected state ── */}
-      <div
-        className="relative"
-        ref={ref}
-        style={{ display: isConnected ? 'none' : undefined }}
+      <button
+        onClick={() => setModalOpen(true)}
+        disabled={isConnecting}
+        tabIndex={isConnected ? -1 : 0}
         aria-hidden={isConnected}
+        className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all hover:-translate-y-px"
+        style={{
+          display: isConnected ? 'none' : undefined,
+          background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
+          boxShadow: '0 0 0 1px rgba(124,58,237,0.4), 0 4px 12px rgba(124,58,237,0.2)',
+        }}
       >
-        <button
-          onClick={() => setOpen((o) => !o)}
-          disabled={isConnecting}
-          tabIndex={isConnected ? -1 : 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all hover:-translate-y-px"
-          style={{
-            background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
-            boxShadow: '0 0 0 1px rgba(124,58,237,0.4), 0 4px 12px rgba(124,58,237,0.2)',
-          }}
-        >
-          <span style={{ display: isConnecting ? undefined : 'none' }}>
-            <SpinnerMini />
-          </span>
-          <span>{isConnecting ? 'Connecting…' : 'Connect Wallet'}</span>
-        </button>
+        {isConnecting && <SpinnerMini />}
+        <span>{isConnecting ? 'Connecting…' : 'Connect Wallet'}</span>
+      </button>
 
-        {/* ── Connector picker ── */}
-        {open && !isConnecting && (
-          <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-white/10 bg-[#0f0f1a] shadow-2xl overflow-hidden z-50">
-            <button
-              onClick={() => { connectInjected(); setOpen(false); }}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.05] transition-colors text-left"
-            >
-              <span className="text-xl leading-none">🦊</span>
-              <div>
-                <div className="text-xs font-medium text-white">Browser Wallet</div>
-                <div className="text-[11px] text-white/40 mt-0.5">MetaMask, Brave, etc.</div>
-              </div>
-            </button>
-            <div className="h-px bg-white/[0.06]" />
-            <button
-              onClick={() => { connectWC(); setOpen(false); }}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.05] transition-colors text-left"
-            >
-              <span className="text-xl leading-none">📱</span>
-              <div>
-                <div className="text-xs font-medium text-white">WalletConnect</div>
-                <div className="text-[11px] text-white/40 mt-0.5">Mobile wallets · QR code</div>
-              </div>
-            </button>
-          </div>
-        )}
-      </div>
+      {/* ── Wallet picker modal ── */}
+      <WalletModal
+        open={modalOpen && !isConnected}
+        onClose={() => setModalOpen(false)}
+        walletHooks={walletHooks}
+      />
     </>
   );
 }
