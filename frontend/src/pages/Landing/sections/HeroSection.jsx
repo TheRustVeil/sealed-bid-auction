@@ -136,10 +136,26 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* ── Left: copy ── */}
           <div>
-            {/* Badge */}
-            <motion.div {...fadeUp(0)} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-chip border border-violet-500/25 bg-violet-500/8 text-violet-300 text-xs font-medium mb-8 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              Sealed-Bid Auction Protocol · Powered by Zama TFHE
+            {/* Badge row */}
+            <motion.div {...fadeUp(0)} className="flex flex-wrap items-center gap-2 mb-8">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-chip border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+                Sealed-Bid Auction Protocol
+              </div>
+              <div
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-chip text-xs font-semibold"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.12))',
+                  border: '1px solid rgba(124,58,237,0.35)',
+                  color: '#c4b5fd',
+                }}
+              >
+                <svg viewBox="0 0 16 16" fill="none" className="w-3 h-3">
+                  <path d="M3 8h10M8 3v10" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="8" cy="8" r="6.5" stroke="#a78bfa" strokeWidth="1" />
+                </svg>
+                Built on Zama fhEVM
+              </div>
             </motion.div>
 
             {/* Headline */}
@@ -161,9 +177,9 @@ export function HeroSection() {
             </h1>
 
             <motion.p {...fadeUp(0.4)} className="text-[17px] text-white/45 leading-relaxed mb-8 max-w-lg">
-              The first token distribution protocol where every winner pays their exact private bid.
+              The first token distribution protocol where every winner pays their exact private bid —
               {' '}<span className="text-white/75 font-medium">
-                Encrypted end-to-end with TFHE — no one ever sees what others paid.
+                encrypted end-to-end with Zama TFHE. Bids are computed inside the EVM — no one ever sees what others paid.
               </span>
             </motion.p>
 

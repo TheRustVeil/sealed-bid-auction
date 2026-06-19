@@ -1,10 +1,11 @@
 import { Navbar } from '../../components/layout/Navbar';
 import { HeroSection } from './sections/HeroSection';
+import { TechStackBar } from './sections/TechStackBar';
 import { FeaturesSection } from './sections/FeaturesSection';
+import { HowItWorksSection } from './sections/HowItWorksSection';
 import { StatsSection } from './sections/StatsSection';
 import { ShowcaseSection } from './sections/ShowcaseSection';
 import { TestimonialsSection } from './sections/TestimonialsSection';
-import { PricingSection } from './sections/PricingSection';
 import { FAQSection } from './sections/FAQSection';
 import { FooterSection } from './sections/FooterSection';
 
@@ -30,14 +31,15 @@ export function Landing() {
 
       {/* ── Sections ── */}
       <HeroSection />
+      <TechStackBar />
 
       <div className="relative z-10 h-px max-w-5xl mx-auto" style={{ background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.25), transparent)' }} />
 
       <FeaturesSection />
+      <HowItWorksSection />
       <StatsSection />
       <ShowcaseSection />
       <TestimonialsSection />
-      <PricingSection />
       <FAQSection />
       <FooterSection />
     </div>

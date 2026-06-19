@@ -60,28 +60,63 @@ export function Dashboard() {
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 py-10">
         {/* ── Page heading ── */}
-        <div className="flex items-start justify-between mb-8">
-          <div>
-            <h1 className="text-xl font-bold text-white">Distributions</h1>
-            <p className="text-white/35 text-sm mt-1">
-              {isConnected
-                ? 'Browse and manage your sealed-bid auctions'
-                : 'Connect your wallet to get started'}
-            </p>
+        <div
+          className="rounded-2xl p-5 sm:p-6 mb-8 overflow-hidden relative"
+          style={{
+            background: 'linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(6,182,212,0.05) 100%)',
+            border: '1px solid rgba(124,58,237,0.18)',
+          }}
+        >
+          {/* Subtle shimmer line */}
+          <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.5), rgba(6,182,212,0.3), transparent)' }} />
+
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <h1 className="text-xl font-bold text-white">Operator Dashboard</h1>
+                <span
+                  className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-chip text-[10px] font-bold"
+                  style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.25)', color: '#34d399' }}
+                >
+                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                  Sepolia Live
+                </span>
+              </div>
+              <p className="text-white/35 text-sm">
+                {isConnected
+                  ? 'Create and manage your sealed-bid FHE auction distributions'
+                  : 'Connect your wallet to create and manage distributions'}
+              </p>
+            </div>
+            {isConnected && (
+              <button
+                onClick={() => navigate('/operator/create')}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5 shrink-0"
+                style={{
+                  background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
+                  boxShadow: '0 0 0 1px rgba(124,58,237,0.35), 0 4px 16px rgba(124,58,237,0.2)',
+                }}
+              >
+                <PlusIcon />
+                New Distribution
+              </button>
+            )}
           </div>
-          {isConnected && (
-            <button
-              onClick={() => navigate('/operator/create')}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
-              style={{
-                background: 'linear-gradient(135deg, #7C3AED, #6D28D9)',
-                boxShadow: '0 0 0 1px rgba(124,58,237,0.35), 0 4px 16px rgba(124,58,237,0.2)',
-              }}
-            >
-              <PlusIcon />
-              New Distribution
-            </button>
-          )}
+
+          {/* Protocol identity bar */}
+          <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-white/[0.06]">
+            {[
+              { label: 'Contract', value: '0x5F48…fc634', color: 'text-violet-400' },
+              { label: 'Token', value: '0x7CF4…af989', color: 'text-cyan-400' },
+              { label: 'Network', value: 'Sepolia', color: 'text-emerald-400' },
+              { label: 'Encryption', value: 'Zama TFHE', color: 'text-orange-400' },
+            ].map(({ label, value, color }) => (
+              <div key={label} className="flex items-center gap-1.5 text-[11px]">
+                <span className="text-white/25">{label}:</span>
+                <span className={`font-mono ${color}`}>{value}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ── Stats (only when connected & has data) ── */}
