@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '../../components/layout/Navbar';
 import { StepRail } from '../../features/distributions/components/StepRail';
 import { StepType } from '../../features/distributions/components/steps/StepType';
 import { StepToken } from '../../features/distributions/components/steps/StepToken';
@@ -15,8 +14,6 @@ export function CreateDistribution() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Navbar back={{ label: 'Operator', to: '/operator' }} />
-
       <main className="max-w-2xl mx-auto px-6 py-8 space-y-8">
         <StepRail currentIndex={stepIndex} />
 

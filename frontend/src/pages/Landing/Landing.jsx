@@ -1,4 +1,3 @@
-import { Navbar } from '../../components/layout/Navbar';
 import { HeroSection } from './sections/HeroSection';
 import { TechStackBar } from './sections/TechStackBar';
 import { FeaturesSection } from './sections/FeaturesSection';
@@ -25,9 +24,6 @@ export function Landing() {
           animationDelay: '2s',
         }}
       />
-
-      {/* ── Shared navbar ── */}
-      <Navbar />
 
       {/* ── Sections ── */}
       <HeroSection />

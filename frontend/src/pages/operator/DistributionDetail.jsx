@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { isAddress } from 'viem';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { Button, Card, CardBody, CardHeader, Pill, Spinner, HeatScore } from '../../components/ui';
-import { Navbar } from '../../components/layout/Navbar';
 import { useDistribution } from '../../features/distributions/hooks/useDistribution';
 import { ActivityFeed } from '../../features/distributions/components/ActivityFeed';
 import { CONTRACT_ADDRESSES } from '../../app/config';
@@ -57,8 +56,6 @@ export function DistributionDetail() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Navbar back={{ label: 'Operator', to: '/operator' }} />
-
       <main className="max-w-3xl mx-auto px-6 py-8 space-y-6">
         {isLoading && (
           <div className="flex justify-center py-12">

@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Navbar } from '../../components/layout/Navbar';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
 import { BadgeCard } from '../../features/reputation/components/BadgeCard';
 import { useReputation } from '../../features/reputation/hooks/useReputation';
@@ -53,8 +52,6 @@ export function Profile() {
         className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[280px] pointer-events-none"
         style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.06) 0%, transparent 70%)' }}
       />
-
-      <Navbar />
 
       <main className="relative z-10 max-w-3xl mx-auto px-6 py-10 space-y-8">
 

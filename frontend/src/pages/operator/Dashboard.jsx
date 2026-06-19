@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../../components/ui';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
-import { Navbar } from '../../components/layout/Navbar';
 import { AuctionCard } from '../../features/distributions/components/AuctionCard';
 import { useDistributions } from '../../features/distributions/hooks/useDistributions';
 import { useWallet } from '../../features/wallet/hooks/useWallet';
@@ -54,9 +53,6 @@ export function Dashboard() {
         className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[280px] pointer-events-none"
         style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.06) 0%, transparent 70%)' }}
       />
-
-      {/* ── Header ── */}
-      <Navbar />
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 py-10">
         {/* ── Page heading ── */}

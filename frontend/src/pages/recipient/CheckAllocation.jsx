@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
-import { Navbar } from '../../components/layout/Navbar';
 import { useWallet } from '../../features/wallet/hooks/useWallet';
 import { DecryptReveal } from '../../features/allocations/components/DecryptReveal';
 
@@ -29,8 +28,6 @@ export function CheckAllocation() {
         className="fixed top-0 right-0 w-[500px] h-[400px] pointer-events-none"
         style={{ background: 'radial-gradient(circle at top right, rgba(6,182,212,0.06) 0%, transparent 70%)' }}
       />
-
-      <Navbar />
 
       <main className="relative z-10 max-w-lg mx-auto px-6 py-12">
         {/* Heading */}

@@ -1,6 +1,15 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
+import { Navbar } from '../components/layout/Navbar';
+
+function useNavBack() {
+  const { pathname } = useLocation();
+  if (pathname === '/operator/create' || pathname.startsWith('/operator/distribution/')) {
+    return { label: 'Operator', to: '/operator' };
+  }
+  return undefined;
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -10,16 +19,19 @@ function ScrollToTop() {
 
 export function Layout() {
   const location = useLocation();
+  const back = useNavBack();
+
   return (
     <>
       <ScrollToTop />
+      <Navbar back={back} />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.18, ease: 'easeInOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.12, ease: 'easeOut' }}
         >
           <Outlet />
         </motion.div>
