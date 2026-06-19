@@ -1,7 +1,32 @@
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
 import { NetworkBadge } from '../../features/wallet/components/NetworkBadge';
+
+function useScrollBehavior(threshold = 80) {
+  const [visible, setVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > threshold);
+      // Hide when scrolling down past threshold, show when scrolling up
+      if (y > threshold) {
+        setVisible(y < lastY.current);
+      } else {
+        setVisible(true);
+      }
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [threshold]);
+
+  return { visible, scrolled };
+}
 
 /*
  * ConfidentialDrop logomark:
@@ -152,17 +177,70 @@ const NAV_LINKS = [
 
 export function Navbar({ back }) {
   const navigate = useNavigate();
+  const { visible, scrolled } = useScrollBehavior();
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <header
+    <>
+    {/* Floating back-to-top button */}
+    <AnimatePresence>
+      {scrolled && (
+        <motion.button
+          key="back-to-top"
+          initial={{ opacity: 0, y: 16, scale: 0.85 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.85 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          onClick={scrollToTop}
+          aria-label="Back to top"
+          style={{
+            position: 'fixed',
+            bottom: 28,
+            right: 24,
+            zIndex: 9998,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 7,
+            padding: '9px 16px',
+            borderRadius: 9999,
+            background: 'linear-gradient(135deg, rgba(124,58,237,0.85), rgba(6,182,212,0.7))',
+            border: '1px solid rgba(167,139,250,0.4)',
+            boxShadow: '0 4px 24px rgba(124,58,237,0.45), 0 0 0 1px rgba(255,255,255,0.06)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            cursor: 'pointer',
+            color: '#fff',
+          }}
+          whileHover={{ scale: 1.06, boxShadow: '0 6px 32px rgba(124,58,237,0.6), 0 0 0 1px rgba(255,255,255,0.1)' }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {/* Up arrow */}
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clipRule="evenodd" />
+          </svg>
+          <span style={{ fontSize: 12, fontWeight: 600, fontFamily: 'JetBrains Mono, monospace', letterSpacing: 1 }}>
+            TOP
+          </span>
+        </motion.button>
+      )}
+    </AnimatePresence>
+
+    <motion.header
       className="sticky top-0 z-50"
+      animate={{ y: visible ? 0 : '-100%' }}
+      transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
       style={{
-        /* Glass morphism — ONLY on the navbar */
-        background: 'linear-gradient(180deg, rgba(13,13,31,0.82) 0%, rgba(13,13,31,0.70) 100%)',
+        background: scrolled
+          ? 'linear-gradient(180deg, rgba(13,13,31,0.95) 0%, rgba(13,13,31,0.88) 100%)'
+          : 'linear-gradient(180deg, rgba(13,13,31,0.82) 0%, rgba(13,13,31,0.70) 100%)',
         backdropFilter: 'blur(24px) saturate(160%)',
         WebkitBackdropFilter: 'blur(24px) saturate(160%)',
         borderBottom: '1px solid rgba(255,255,255,0.07)',
-        boxShadow: '0 1px 0 rgba(124,58,237,0.08), 0 4px 24px rgba(0,0,0,0.25)',
+        boxShadow: scrolled
+          ? '0 1px 0 rgba(124,58,237,0.15), 0 8px 32px rgba(0,0,0,0.45)'
+          : '0 1px 0 rgba(124,58,237,0.08), 0 4px 24px rgba(0,0,0,0.25)',
+        transition: 'background 0.3s, box-shadow 0.3s',
       }}
     >
       {/* Subtle prismatic top edge */}
@@ -288,6 +366,7 @@ export function Navbar({ back }) {
           </NavLink>
         ))}
       </div>
-    </header>
+    </motion.header>
+    </>
   );
 }
