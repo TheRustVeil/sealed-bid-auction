@@ -3,58 +3,134 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ConnectButton } from '../../features/wallet/components/ConnectButton';
 import { NetworkBadge } from '../../features/wallet/components/NetworkBadge';
 
-/* ── Advanced iridescent bolt logo ── */
-const AdvancedLogo = () => (
-  <div className="relative group-hover:scale-[1.03] transition-transform duration-300">
-    {/* Outer glow halo */}
+/*
+ * ConfidentialDrop logomark:
+ *   Shield = sealed / confidential / security
+ *   Bold lock + keyhole = encrypted bids
+ *   FHE rings = on-chain homomorphic settlement
+ *   Violet → cyan gradient = project colour palette
+ */
+const CDLogo = () => (
+  <div className="relative group-hover:scale-[1.04] transition-transform duration-300">
+    {/* Hover glow */}
     <div
-      className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
-      style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.6) 0%, rgba(6,182,212,0.3) 60%, transparent 80%)' }}
+      className="absolute -inset-2 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none"
+      style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.55) 0%, rgba(6,182,212,0.25) 65%, transparent 85%)' }}
     />
 
-    {/* Glass card */}
+    {/* Glass tile */}
     <div
-      className="relative w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden"
+      className="relative w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden"
       style={{
-        background: 'linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(124,58,237,0.12) 50%, rgba(6,182,212,0.08) 100%)',
-        border: '1px solid rgba(255,255,255,0.18)',
-        boxShadow: '0 8px 32px rgba(124,58,237,0.25), 0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15)',
-        backdropFilter: 'blur(16px)',
+        background: 'linear-gradient(150deg, rgba(124,58,237,0.18) 0%, rgba(13,13,31,0.70) 55%, rgba(6,182,212,0.12) 100%)',
+        border: '1px solid rgba(255,255,255,0.16)',
+        boxShadow: '0 10px 40px rgba(124,58,237,0.30), 0 2px 8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18)',
+        backdropFilter: 'blur(20px)',
       }}
     >
-      {/* Top shine streak */}
-      <div className="absolute top-0 left-3 right-3 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-      {/* Upper sheen */}
-      <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent pointer-events-none rounded-t-2xl" />
-      {/* Bottom depth */}
-      <div className="absolute bottom-0 inset-x-0 h-px bg-black/25 rounded-b-2xl" />
+      {/* top-edge shine */}
+      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+      {/* upper sheen */}
+      <div className="absolute top-0 inset-x-0 h-2/5 bg-gradient-to-b from-white/[0.09] to-transparent pointer-events-none" />
+      {/* bottom depth */}
+      <div className="absolute bottom-0 inset-x-0 h-px bg-black/30" />
 
-      {/* Iridescent bolt — main icon */}
-      <svg viewBox="0 0 48 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 relative z-10 drop-shadow-lg">
-        <path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"/>
-        <mask id="adv-logo-mask" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style={{maskType:'alpha'}}>
-          <path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z"/>
-        </mask>
-        <g mask="url(#adv-logo-mask)">
-          <g filter="url(#adv-b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g>
-          <g filter="url(#adv-c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g>
-          <g filter="url(#adv-d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g>
-          <g filter="url(#adv-g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g>
-          <g filter="url(#adv-j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" transform="rotate(39.51 .387 8.972)"/></g>
-          <g filter="url(#adv-k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" transform="rotate(37.892 47.523 -6.092)"/></g>
-          <g filter="url(#adv-l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" transform="rotate(37.892 41.412 6.333)"/></g>
-          <g filter="url(#adv-p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" transform="rotate(37.892 38.418 32.4)"/></g>
-        </g>
+      {/* ── Project logomark SVG ── */}
+      <svg
+        viewBox="0 0 80 90"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-11 h-12 relative z-10"
+      >
         <defs>
-          <filter id="adv-b" width="60.045" height="41.654" x="-19.77" y="16.149" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="7.659"/></filter>
-          <filter id="adv-c" width="90.34" height="51.437" x="-54.613" y="-7.533" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="7.659"/></filter>
-          <filter id="adv-d" width="79.355" height="29.4" x="-49.64" y="2.03" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.596"/></filter>
-          <filter id="adv-g" width="74.749" height="58.852" x="15.756" y="-17.901" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="7.659"/></filter>
-          <filter id="adv-j" width="56.045" height="63.649" x="-27.636" y="-22.853" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.596"/></filter>
-          <filter id="adv-k" width="54.814" height="64.646" x="20.116" y="-38.415" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.596"/></filter>
-          <filter id="adv-l" width="33.541" height="35.313" x="24.641" y="-11.323" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.596"/></filter>
-          <filter id="adv-p" width="39.409" height="43.623" x="18.713" y="10.588" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse"><feFlood floodOpacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.596"/></filter>
+          {/* Main shield gradient: violet top-left → cyan bottom-right */}
+          <linearGradient id="cd-shield" x1="0" y1="0" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stopColor="#9333EA" />
+            <stop offset="48%"  stopColor="#7C3AED" />
+            <stop offset="100%" stopColor="#0891B2" />
+          </linearGradient>
+
+          {/* Top-half gloss */}
+          <linearGradient id="cd-gloss" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0.22)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+
+          {/* Inner ring subtle glow */}
+          <radialGradient id="cd-ring-glow" cx="50%" cy="52%" r="50%">
+            <stop offset="0%"   stopColor="rgba(167,139,250,0.18)" />
+            <stop offset="100%" stopColor="rgba(167,139,250,0)" />
+          </radialGradient>
         </defs>
+
+        {/* ── Shield body ── */}
+        {/* Pentagon shield — wide top, converging to a rounded bottom point */}
+        <path
+          d="M40 4 L74 18 L74 52 Q74 76 40 88 Q6 76 6 52 L6 18 Z"
+          fill="url(#cd-shield)"
+        />
+        {/* Top-half gloss overlay */}
+        <path
+          d="M40 4 L74 18 L74 48 L6 48 L6 18 Z"
+          fill="url(#cd-gloss)"
+        />
+        {/* Shield outer border */}
+        <path
+          d="M40 4 L74 18 L74 52 Q74 76 40 88 Q6 76 6 52 L6 18 Z"
+          fill="none"
+          stroke="rgba(255,255,255,0.22)"
+          strokeWidth="1.5"
+        />
+        {/* Subtle inner inset border for depth */}
+        <path
+          d="M40 9 L69 21.5 L69 51 Q69 72 40 83 Q11 72 11 51 L11 21.5 Z"
+          fill="none"
+          stroke="rgba(255,255,255,0.09)"
+          strokeWidth="1"
+        />
+
+        {/* ── FHE encryption rings (concentric circles, faint) ── */}
+        <circle cx="40" cy="53" r="28" stroke="rgba(255,255,255,0.07)" strokeWidth="1" fill="none" />
+        <circle cx="40" cy="53" r="21" stroke="rgba(255,255,255,0.06)" strokeWidth="1" fill="none" />
+
+        {/* ── Lock shackle (the "sealed" arc) ── */}
+        {/* Shadow/depth pass */}
+        <path
+          d="M26 52 L26 40 Q26 24 40 24 Q54 24 54 40 L54 52"
+          stroke="rgba(0,0,0,0.30)"
+          strokeWidth="9"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Main shackle — bold white */}
+        <path
+          d="M26 52 L26 40 Q26 24 40 24 Q54 24 54 40 L54 52"
+          stroke="rgba(255,255,255,0.92)"
+          strokeWidth="7"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* ── Lock body ── */}
+        {/* Dark base */}
+        <rect x="17" y="52" width="46" height="28" rx="7" fill="rgba(0,0,0,0.38)" />
+        {/* White face */}
+        <rect x="17" y="52" width="46" height="28" rx="7" fill="rgba(255,255,255,0.88)" />
+        {/* Top inner shadow line */}
+        <rect x="17" y="52" width="46" height="5" rx="4" fill="rgba(0,0,0,0.08)" />
+
+        {/* ── Keyhole ── */}
+        {/* Keyhole circle */}
+        <circle cx="40" cy="62" r="6" fill="rgba(80,20,200,0.75)" />
+        {/* Keyhole slot */}
+        <rect x="37" y="65" width="6" height="9" rx="2" fill="rgba(80,20,200,0.75)" />
+
+        {/* ── FHE node dots at shield vertices (subtle) ── */}
+        <circle cx="40" cy="6"  r="2" fill="rgba(255,255,255,0.35)" />
+        <circle cx="72" cy="19" r="1.5" fill="rgba(255,255,255,0.25)" />
+        <circle cx="72" cy="51" r="1.5" fill="rgba(6,182,212,0.50)" />
+        <circle cx="8"  cy="19" r="1.5" fill="rgba(255,255,255,0.25)" />
+        <circle cx="8"  cy="51" r="1.5" fill="rgba(167,139,250,0.50)" />
       </svg>
     </div>
   </div>
@@ -114,7 +190,7 @@ export function Navbar({ back }) {
             onClick={() => navigate('/')}
             className="flex items-center gap-3.5 group flex-shrink-0"
           >
-            <AdvancedLogo />
+            <CDLogo />
 
             {/* Wordmark — desktop only */}
             <div className="hidden sm:flex flex-col items-start leading-none gap-0.5">
